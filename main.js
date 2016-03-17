@@ -24,7 +24,9 @@ var USAGE = "Error missing args. \n" +
     "--verbose : (optional) verbose mode. Display more information output\n" +
     "--useTunnel : use tunneling instead of local address. default is false\n" +
     "--reportSavePath: (optional) path to save Junit results file\n" +
-    "--cleanUpAfterRun: (optional) cleans up the application after the run."
+    "--cleanUpAfterRun: (optional) cleans up the application after the run\n" +
+    "--logPath: (optional) path to store device logs - application path will be used by default\n" +
+    "--logMins: (optional) Windows only - specifies number of minutes to get logs.";
 
 var argv = parseArgs(process.argv.slice(2));
 var pathToParamedicConfig = argv.config && path.resolve(argv.config);
@@ -35,6 +37,22 @@ if (pathToParamedicConfig || // --config
     var paramedicConfig = pathToParamedicConfig ?
         ParamedicConfig.parseFromFile(pathToParamedicConfig):
         ParamedicConfig.parseFromArguments(argv);
+
+    if(argv.plugin) {
+        paramedicConfig.setPlugins(argv.plugin);
+    }
+
+    if(argv.reportSavePath) {
+        paramedicConfig.setReportSavePath(argv.reportSavePath);
+    }
+
+    if(argv.logPath) {
+        paramedicConfig.setLogPath(argv.logPath);
+    }
+
+    if(argv.logMins) {
+        paramedicConfig.setLogMins(argv.logMins);
+    }
 
     paramedic.run(paramedicConfig)
     .catch(function (error) {
