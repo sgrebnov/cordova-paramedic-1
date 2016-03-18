@@ -36,6 +36,14 @@ if (pathToParamedicConfig || // --config
         ParamedicConfig.parseFromFile(pathToParamedicConfig):
         ParamedicConfig.parseFromArguments(argv);
 
+    if(argv.plugin) {
+        paramedicConfig.setPlugins(argv.plugin);
+    }
+
+    if(argv.reportSavePath){
+        paramedicConfig.setReportSavePath(argv.reportSavePath);
+    }
+
     paramedic.run(paramedicConfig)
     .catch(function (error) {
         console.log(JSON.stringify(error));
